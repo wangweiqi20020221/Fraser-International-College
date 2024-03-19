@@ -7,3 +7,8 @@ Welcome to this respository! This respository is helpful to you to be success at
 ### 🧐 How to use this respository
 - You can find metarials in the code view, listed by courses.
 - If you have questions, you can post it in issues view and wait someone to reply.
+- If this repository helps you, please give it a star to let others find it easily!
+
+### 👋🏻 Contact me
+- My github profile: https://github.com/wangweiqi20020221
+- My email: wangweiqi20020221@126.com
