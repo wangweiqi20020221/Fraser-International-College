@@ -9,6 +9,9 @@ Welcome to this respository! This respository is helpful to you to be success at
 - If you have questions, you can post it in issues view and wait someone to reply.
 - If this repository helps you, please give it a star to let others find it easily!
 
-### 👋🏻 Contact me
+### 🫵 Be a collaborator
+If you have your file and wants to share it, pleasae send me an email and I will invite you to be a collaborator. You can find my email below. 
+
+### 🫸 Contact me
 - My github profile: https://github.com/wangweiqi20020221
 - My email: wangweiqi20020221@126.com
