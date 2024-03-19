@@ -1,0 +1,154 @@
+//Question 5:
+int Point::getQuadrant() {
+	if(this->x>0 && this->y>0) 
+		return 1;
+	else if(this->x<0 && this->y>0) 
+		return 2;
+	if(this->x>0 && this->y<0) 
+		return 3;
+	if(this->x>0 && this->y<0) 
+		return 4;
+	else
+		return -1;
+}
+
+//Question 6:
+int Point::getDistance() {
+	return sqrt(pow(x,2) + pow(y,2));
+}
+
+//Question 7:
+string Point::toString() {
+	stringstream ss;
+	ss<<"("<<x<<","<<y<<")";
+	return ss.str();
+}
+//Question 8:
+int getDistanceBetweenPoints(Point p1,Point p2) {
+	float xdiff = p1.getX() - p2.getX();
+	float ydiff = p1.getY() - p2.getY();
+	return sqrt(xdiff*xdiff + ydiff*ydiff);
+
+//Question 9
+Point getFurthestPoint(Point *p, int size) {
+	if(size<=0) {
+		cout<<"array is empty";
+		abort();
+	}
+	Point furthest(0,0);
+	double maxdist = p[1].getDistance() , d=0;
+	int index=0;
+	for(int i=1;i<size;i++) {
+			d = p[i].getDistance();
+			if(d>=maxdist) {
+				maxdist = d;
+				index=i;
+			}
+		}
+	furthest = p[index];
+	return furthest;
+}
+
+int main() {
+	Triangle t;
+	float side;
+	cout<<"Enter side 1: ";
+	cin>>side; t.setSide1(side);
+	cout<<"Enter side 2: ";
+	cin>>side; t.setSide2(side);
+	cout<<"Enter side 3: ";
+	cin>>side; t.setSide3(side);
+	t.print();
+	return 0;
+}
+
+
+//Question 10
+#include<iostream>
+#include<stdlib.h>
+using namespace std;
+class RationalNumber {
+	private: 
+		int a,b;
+	public:
+		RationalNumber() {
+			a=0;
+			b=1;
+		}
+		RationalNumber(int arg) {
+			a=arg;
+			b=1;
+		}
+		RationalNumber(int num,int den) {
+			a=num;
+			b=den;
+		}
+		double toDouble() {
+			double d = static_cast<double>(a)/b;
+			return d;
+		}
+		void reduce() {
+			if(b==0) {
+				cout<<"INVALID RATIONAL NUMBER!";
+			}
+			else if(abs(a)==abs(b)) {
+				a=a/b;
+				b=1;
+			}
+			else {
+				for(int i=b;i>=2;i--) {
+					if(a%i==0 && b%i==0) {
+						a=a/i;
+						b=b/i;
+					}
+				}
+			}
+		}
+		void standardize() {
+			if(a<0 && b<0 || a>0 && b<0) {
+				a=a*-1;
+				b=b*-1;
+			}
+		}
+		void print() {
+			cout<<a<<"/"<<b<<endl;
+		}	
+		int getNumerator() {
+			return a;
+		}
+		int getDenominator() {
+			return b;
+		}
+		void setNumerator(int m) {
+			a=m;
+		}
+		void setDenominator(int n) {
+			b=n;
+		}
+		void setNumber() {
+			cout<<"Enter Numerator";
+			cin>>a;
+			cout<<"Enter Denominator";
+			cin>>b;
+		}
+};
+int main() {
+	int size;
+	cout<<"Enter size of Rational Number list: "<<endl;
+	cin>>size;
+	RationalNumber r[size];                                         //Dyanamic array can also be created here for checking out the functions.
+	for(int i=0;i<size;i++)  {
+		cout<<"Reading "<<i+1<<" number: "<<endl;
+		r[i].setNumber();
+	}
+	for(int i=0;i<size;i++) {
+		cout<<"Double form: "<<r[i].toDouble();
+		r[i].standardize();
+		cout<<"Standardized Form: "<<endl;
+		r[i].print();
+		r[i].reduce();
+		cout<<"Reduced form: "<<endl;
+		r[i].print();
+		}
+	return 0;
+}

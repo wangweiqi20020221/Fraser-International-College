@@ -1,0 +1,169 @@
+//Question 1-7 are for output
+//Question 8-10 are:
+double toDouble(RationalNumber r) {
+	return static_cast<double>(r.a)/r.b;
+}
+void standardize(RationalNumber& R) {
+	if(R.a<0 && R.b<0 || R.a>0 && R.b<0) {
+		R.a=R.a*-1;
+		R.b=R.b*-1;
+	}
+}
+void reduce() {
+	if(b==0) {
+		cout<<"INVALID RATIONAL NUMBER!";
+	}
+	else if(abs(a)==abs(b)) {
+		a=a/b;
+		b=1;
+	}
+	else {
+		for(int i=b;i>=2;i--)
+			if(a%i==0 && b%i==0) {
+				a=a/i;
+				b=b/i;
+			}
+	}
+}
+
+
+
+//Question 10:
+#include<iostream>
+#include<cmath>
+#include<cstring>
+using namespace std;
+struct StringStat
+{
+string s;
+int lower, upper, digit;
+}str;
+int main() {
+	str.s="GurKamalis12";
+	str.lower=0;
+	str.upper=0;
+	str.digit=0;
+	int l=str.s.length();
+	for(int i=0;i<=l;i++) {
+		if(islower(str.s[i]))
+			str.lower++;
+		else if(isupper(str.s[i]))
+			str.upper++;
+		else if(isdigit(str.s[i]))
+			str.digit++;
+		}
+		cout<<"Upper: "<<str.upper<<endl;
+		cout<<"Lower: "<<str.lower<<endl;
+		cout<<"Digit: "<<str.digit<<endl;
+	return 0;
+}
+//Question 11:
+struct StringStat
+{
+char *s;
+int lower, upper, digit;
+}str;
+int main() {
+	//str = new str;
+	int l;
+	cout<<"How long you want the string: " ;
+	cin>>l;
+	str.s = new char[l];
+	cout<<"Please enter the string: ";
+	for(int i=0;i<l;i++) 
+		cin>>str.s[i];
+	str.lower=0;
+	str.upper=0;
+	str.digit=0;
+	//int l=str->s.length();
+	for(int i=0;i<=l;i++) {
+		if(islower(str.s[i]))
+			str.lower++;
+		else if(isupper(str.s[i]))
+			str.upper++;
+		else if(isdigit(str.s[i]))
+			str.digit++;
+		}
+		cout<<"Upper: "<<str.upper<<endl;
+		cout<<"Lower "<<str.lower<<endl;
+		cout<<"Digit "<<str.digit<<endl;
+		delete []str.s;
+	return 0;
+}
+
+//Q11-17:
+struct StudentRecord
+{
+	string name;
+	float test, midterm, final; //test (20%), midterm (30%) and final (50%)
+	char letterGrade;
+};
+
+StudentRecord readRecords() {			
+	StudentRecord s;
+	cout<<"Enter the Student name: ";
+	cin>>s.name;
+	cout<<"Enter the test score: ";
+	cin>>s.test;
+	cout<<"Enter the midterm score: ";
+	cin>>s.midterm;
+	cout<<"Enter final score: ";
+	cin>>s.final;
+}
+char gradeCalculator(StudentRecord s) {
+	double total = s.test*0.2 + s.midterm*0.3 + s.final*0.5;
+	char g;
+	if(total >=0 && total<50) 
+		g='F';
+	else if(total>=50 && total<60)
+		g='D';
+	else if(total>=60 && total<75)
+		g='C';
+	else if(total>=75 && total<90)
+		g='B';
+	else if(total>=90 && total<=100)
+		g='A';
+	return g;
+}
+void viewRecord(StudentRecord &sAlias) {
+	cout<<sAlias.name<<"		"<<sAlias.letterGrade<<endl;
+}
+void viewRecord(Student Record *s,int size, char grade) {
+	for(int i=0;i<size;i++ ){
+		if(s->letterGrade == grade) {
+			cout<<sAlias.name<<"		"<<sAlias.letterGrade<<endl;
+		}
+	}
+}
+int searchName(StudentRecord* s, int size, string name) {
+	for (int i=0;i<n;i++) {
+		if(strcmp(s->name,name)==0) {
+			return i;
+		}
+	}
+	return -1;	
+}
+total getTopStudentRecord(StudentRecord* s,int size) {
+	float top=0;
+	double total = s->test*0.2 + s->.midterm*0.3 + s->final*0.5;
+	for(int i=0;i<size;i++) {
+		double total = s[i]->test*0.2 + s[i]->.midterm*0.3 + s[i]->final*0.5;
+		if(total>top)
+			top=total;
+	}	
+	return top;
+}
+void printStudentRecordsSorted(StudentRecord* s,int size) {
+	char temp,j;
+	for(int i=1; i<size; i++)
+	{
+		temp=s[i]->letterGrade;
+		j=i-1;
+		while((temp<s[j]->letterGrade) && (j>=0))
+		{
+			s[j+1].letterGrade=s[j].letterGrade;
+			j=j-1;
+		}
+		s[j+1].letterGrade=temp;
+	}
+}

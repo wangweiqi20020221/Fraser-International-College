@@ -1,0 +1,313 @@
+//Question 1
+#include<iostream>
+#include<vector>
+using namespace std;
+vector <int> pop_front(vector<int> n) {
+	for(int i=0;i<n.size();i++) {
+		n[i] = n[i+1];
+	}
+	n.resize(n.size()-1);
+	return n;
+}
+void printVector(vector<int> n) {
+	for(int i=0;i<n.size();i++) {
+		cout<<n[i]<<"   ";
+	}
+  cout<<endl;
+}
+int main() {
+	vector <int> n(5);
+	//filling n;
+	for(int i=0;i<n.size();i++) {
+		n[i] = i*3;
+	}
+	cout<<"Our vector is: "; printVector(n);
+	n=pop_front(n);
+	cout<<"After removing first element of our vector"; printVector(n);
+	return 0;
+}
+
+//Question 2
+vector<double> operator+(vector<double> post, vector<double> malone) {
+	vector<double> circles;
+	if(post.size()!=malone.size())
+		return circles;
+	for(int i=0;i<post.size();i++) {
+		circles.push_back(post[i]+malone[i]);
+	}
+	return circles;
+}
+void printVector(vector<double> n) {
+	for(int i=0;i<n.size();i++) {
+		cout<<n[i]<<"	";
+	}
+	cout<<endl;
+}
+int main() {
+	vector<double> x(3), y(3);
+	for(int i=0;i<x.size();i++) {
+		x[i] = static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(30-3)));
+	}
+	for(int i=0;i<y.size();i++) {
+		y[i] = static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(30-3)));
+	}
+	cout<<"x is: ";		printVector(x);
+	cout<<"y is: ";		printVector(y);
+	x = x+y;
+	cout<<"Addition is: "<<endl;
+	printVector(x);
+	
+	return 0;
+}
+
+//Question 3:
+
+vector<int> operator *(const vector<int> enjoyment,const int music) {
+	vector<int> life;
+	if(enjoyment.size()==0)
+		return life;
+	int mymusic=abs(music);
+	if(mymusic==0) {
+		for(int j=0;j<enjoyment.size();j++) {
+			life.push_back(0);
+		}		
+	}
+	for(int i=0;i<mymusic;i++) {
+		for(int j=0;j<enjoyment.size();j++) {
+			life.push_back(enjoyment[j]);
+		}
+	}
+	return life;
+}
+void printVector(vector<int> n) {
+	for(int i=0;i<n.size();i++) {
+		cout<<n[i]<<"	";
+	}
+	cout<<endl;
+}
+int main() {
+	vector <int> n(5);	
+	
+	n = n*2;
+	cout<<"empty vector multiplied by 2: "<<endl;		printVector(n);
+	
+		//filling n;
+	for(int i=0;i<n.size();i++) {
+		n[i] = i*3;
+	}
+	
+	n = n*3;
+	cout<<"filled n multiplied by 3: "<<endl;		printVector(n);
+	
+	n = n*0;
+	
+	cout<<"filled n multiplied by 0: "<<endl;		printVector(n);
+	return 0;
+}
+
+//Question 4: 
+
+void printVector(vector<char> n) {
+	for(int i=0;i<n.size();i++) {
+		cout<<n[i];
+	}
+	cout<<endl;
+}
+void swap(vector<char> &post, vector<char>& malone) {
+		if(post.size()!=malone.size()) {
+			cout<<"Vector sizes are not eqaul!";
+			abort();
+		}
+		char temp;
+	for(int i=0;i<post.size();i++) {
+		temp = post[i];
+		post[i] = malone[i];
+		malone[i] = temp;
+	}
+}
+
+int main() {
+	vector <char> x(2), y(2);
+	cout<<"Enter a string: "<<endl;
+	for(int i=0;i<2;i++) {
+		cin>>x[i];
+	}
+	cout<<"Enter a string: "<<endl;
+	for(int i=0;i<2;i++) {
+		cin>>y[i];
+	}
+	cout<<"x is: "; printVector(x);
+	cout<<"y is: "; printVector(y);
+	swap(x,y);
+	cout<<"x and y after swapping are: "<<endl; cout<<"x is: "; printVector(x); cout<<"y is: "; printVector(y);
+	return 0;
+}
+
+//Question 5: 
+vector<int> operator-(const vector<int> post,const vector<int> malone) {
+	vector<int> circles;
+	if(post.size()!=malone.size()) {
+		cout<<"Cannot subtract the different sized vectors! ";
+		return circles;
+	}
+	for(int i=0;i<post.size();i++) {
+		circles.push_back(post[i]-malone[i]);
+	}
+	return circles;
+}
+
+//Question 6:
+bool isdistinct(const vector<int> mi) {
+	if(mi.size()==0) {
+		cout<<"vector is empty";
+		return -1;
+	}
+	for(int i=0;i<mi.size();i++) {
+		for(int j=i+1;j<mi.size();j++)
+			if(mi[i]==mi[j])
+				return false;
+	}
+	return true;
+}
+
+//Question 7:
+vector<int> distinctElements(const vector<int> X) {
+	vector<int> coolX;
+	if(X.size()==0)
+		return coolX;
+	coolX.push_back(X[0]);
+	bool ice=1;
+	for(int i=1;i<X.size();i++) {
+		for(int j=0;j<coolX.size();j++) {
+			if(coolX[j]==X[i])
+				ice=0;
+		}
+		if(ice==1)
+			coolX.push_back(X[i]);
+	}
+	return coolX;
+} 
+
+//Question 8:
+//kind of similar as previous
+void removeDuplicates(vector<int>& X) {
+	vector<int> coolX;
+	if(X.size()==0) {	
+		cout<<"There are no elements in the vector";
+		abort();
+	}
+	coolX.push_back(X[0]);
+	bool ice=1;
+	for(int i=1;i<X.size();i++) {
+		for(int j=0;j<coolX.size();j++) {
+			if(coolX[j]==X[i])
+				ice=0;
+		}
+		if(ice==1)
+			coolX.push_back(X[i]);
+	}
+	X=coolX;
+}
+
+
+//Question 9:
+vector<int> duplicate(vector<int> X) {
+	vector<int> coolX = X;
+	for(int i =0;i<X.size();i++) {
+		for(int j=0;j<X[i];j++) {
+			coolX.push_back(X[i]);
+		}
+	}
+	return coolX;
+}
+
+
+//Question 10:
+void insertIncreasing(vector<int> &a, const int x)	{
+	int n = a.size();
+	bool flag = 0;
+	int i=0;
+	while(i<n) {
+		if(x<=a[i]) {
+			a.insert(a.begin()+i,x);
+			flag=1;
+			break;
+		}
+		i++;
+	}
+	if(flag==0) 
+		a.push_back(x);
+}	// sort library function can also be used.
+
+//Question 11:
+void insertGrouped(vector<int> &a, const int x) {
+	int i=0; bool flag=0;
+	while(i<a.size()) {
+		if(x%2==0 && a[i]%2==0) {
+			a.insert(a.begin()+i, x);
+			flag=1;
+			break;
+		}
+		else if(x%2!=0 && a[i]%2!=0) {
+			a.insert(a.begin()+i, x);
+			flag=1;
+			break;
+		}
+		i++;
+	}
+	if(flag==0)
+		a.push_back(x);
+}
+
+//Question 12:
+//This one is really nice and used in Assignment 2 as well.
+
+
+
+//Question 13:
+vector <Vehicle> readVehicleInventory(const string path) { 
+	ifstream fin;
+	fin.open(path);
+	if(fin.fail()) {
+		cout<<"file cannot be found!";
+		abort();
+	}
+	Vehicle gans;
+	vector<Vehicle> tesla;
+	while(fin.eof()==false) {
+		fin>>gans.make;
+		fin>>gans.year;
+		fin>>gans.hp;
+		tesla.push_back(gans);
+	}
+	return tesla;
+}
+
+//Question 14:
+vector<Vehicle> reOrderObjects(vector<Vehicle> tesla) {
+	Vehicle gans = tesla[0];
+	int count =1;
+	int n = tesla.size();
+	for(int i=1;i<n;i++) {
+		for(int k=i;k<n;k++) {
+			if(tesla[k].make==gans.make) {
+				tesla.insert((tesla.begin()+i),tesla[k]);
+				tesla.erase((tesla.begin()+k+1));
+				i++;
+			}			
+		}
+		gans = tesla[i];
+	}
+	return tesla;
+}
+
+//Question 15:
+Vehicle  mostPowerful(const vector<Vehicle>& tesla) {
+	int index=0;
+	for(int i=1;i<tesla.size();i++)
+		if(tesla[i].hp>tesla[index].hp) 
+			index = i;
+	return tesla[index];
+}
+
+//THE END!

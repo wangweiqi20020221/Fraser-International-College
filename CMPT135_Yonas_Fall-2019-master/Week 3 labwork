@@ -1,0 +1,720 @@
+#include <iostream>
+#include<cmath>
+using namespace std;
+class RationalNumber
+{
+	/*
+	This class is designed to represent Rational Number objects.
+	A rational number is a number of the form a/b with integers
+	a and b such that b is different from 0.
+	*/
+private:
+	int a, b;
+public:
+	//Constructors
+	RationalNumber();
+	RationalNumber(int, int);
+
+	//Getters
+	int getNumerator() const;
+	int getDenominator() const;
+
+	//Setters
+	void setNumerator(int num);
+	void setDenominator(int denom);
+
+	//Additional member functions
+	double toDouble();
+	void standardize(); 
+	void reduce(); 
+	void print();
+		// basic mathematics
+	RationalNumber operator+(const RationalNumber&) const;
+	RationalNumber operator+(const int&) const;
+	RationalNumber operator-(const RationalNumber&) const;
+	RationalNumber operator-(const int&) const;
+	RationalNumber operator*(const RationalNumber&) const;
+	RationalNumber operator*(const int&) const;
+	RationalNumber operator/(const RationalNumber&) const;
+	RationalNumber operator/(const int&) const;
+	//basic binary compounds
+	RationalNumber operator+=(const RationalNumber& r) const; 
+	RationalNumber operator+=(const int& x) const; 
+	RationalNumber operator*=(const RationalNumber& r) const; 
+	RationalNumber operator*=(const int& x) const; 
+	RationalNumber operator/=(const RationalNumber& r) const; 
+	RationalNumber operator/=(const int& x) const; 
+	RationalNumber operator-=(const RationalNumber& r) const;
+	RationalNumber operator-=(const int& x) const; 
+	//logical
+	bool isEqual(const RationalNumber& ) const;
+	bool operator==(const RationalNumber& ) const;
+	bool operator==(const int& ) const;
+	bool operator!=(const RationalNumber& ) const;
+	bool operator!=(const int& ) const;
+	bool operator<(const RationalNumber& ) const;
+	bool operator<(const int& ) const;
+	bool operator<=(const RationalNumber& ) const;
+	bool operator<=(const int& ) const;
+	bool operator>(const RationalNumber& ) const;
+	bool operator>(const int& ) const;
+	bool operator>=(const RationalNumber& ) const;
+	bool operator>=(const int& ) const;
+	//increment and decrement unary operators.
+	RationalNumber operator-() const;
+	RationalNumber& operator++();
+	RationalNumber operator++(int DUMMY);
+	RationalNumber& operator--();
+	RationalNumber operator--(int DUMMY);
+};
+
+//Constructors
+RationalNumber::RationalNumber()
+{
+	//As a default object, let us construct 0/1 rational number
+	a = 0;
+	b = 1;
+}
+
+RationalNumber::RationalNumber(int num, int denom)
+{
+	//If the denominator parameter is 0, ignore it and use 1
+	a = num;
+	b = denom != 0 ? denom : 1;
+	//Now that the object is created, standardize and reduce it
+	standardize();
+	reduce();
+}
+
+//Getters
+int RationalNumber::getNumerator() const
+{
+	return a;
+}
+int RationalNumber::getDenominator() const
+{
+	return b;
+}
+
+//Setters
+void RationalNumber::setNumerator(int num)
+{
+	a = num;
+	//Now that numerator of an existing object is modified,
+	//standardize it and reduce it
+	standardize();
+	reduce();
+}
+void RationalNumber::setDenominator(int denom)
+{
+	//If the denominator parameter is 0, ignore it and use 1
+	b = denom != 0 ? denom : 1;
+	//Now that denominator of an existing object is modified,
+	//standardize it and reduce it
+	standardize();
+	reduce();
+}
+
+//Additional member functions
+double RationalNumber::toDouble()
+{
+	return static_cast<double>(a)/b;
+}
+void RationalNumber::standardize()
+{
+	if (b < 0)
+	{
+		a *= -1;
+		b *= -1;
+	}
+}
+void RationalNumber::reduce()
+{
+	if (a == 0)
+	{
+		b = 1;
+		return;
+	}
+	else
+	{
+		//Remeber that the denominator is NEVER zero by design
+		//Therefore here both numerator and denominator are non-zero.
+		int m = abs(a);
+		int n = abs(b);
+		int gcd = m < n ? m : n;
+		while (gcd > 0)
+		{
+			if (m % gcd == 0 && n % gcd == 0)
+				break;
+			gcd--;
+		}
+		a /= gcd;
+		b /= gcd;
+	}
+}
+void RationalNumber::print()
+{
+	cout << a << "/" << b;
+}
+bool RationalNumber::isEqual(const RationalNumber& r) const {
+	if(this->a*r.b==r.a*this->b) 
+		return true;
+	else
+		return false;
+}
+
+//binary operators basic
+RationalNumber RationalNumber::operator+(const RationalNumber& r) const {	
+	int a1=this->a;
+	int b1=this->b;
+	int a2=r.a;
+	int b2=r.b;
+	RationalNumber answer(a1*b2+a2*b1, b1*b2);
+	return answer;
+}
+RationalNumber RationalNumber::operator+(const int &x) const {
+	RationalNumber temp(x,1);
+	return *this+temp;
+}
+RationalNumber operator+(const int &x , RationalNumber & r) {
+	return r+x;
+}
+RationalNumber RationalNumber::operator*(const RationalNumber& r) const {
+	int a1=r.a;
+	int b1=r.b;
+	int a2=this->a;
+	int b2=this->b;
+	RationalNumber product(a1*a2,b1*b2);
+	return product;
+}
+RationalNumber RationalNumber::operator*(const int &x) const {
+	RationalNumber temp(x,1);
+	temp=temp*(*this);
+	return temp; 	
+}
+RationalNumber operator*(const int &x, const RationalNumber& r) {
+	return r*x;
+}
+RationalNumber RationalNumber::operator/(const RationalNumber& r) const {
+	int a1=r.a;
+	int b1=r.b;
+	int a2=this->a;
+	int b2=this->b;
+	RationalNumber div(a1*b2,b1*a2);
+	return div;
+}
+RationalNumber RationalNumber::operator/(const int &x) const {
+	RationalNumber temp(x,1);
+	return *this/temp; 	
+}
+RationalNumber operator/(const int &x, const RationalNumber& r) {		// well division is not commutative my friend
+	int n=r.getNumerator();
+	int d=r.getDenominator();
+	RationalNumber div(d*x,n);
+	return div;
+}
+RationalNumber RationalNumber::operator-(const RationalNumber& r) const {
+	int a1=this->a;
+	int b1=this->b;
+	int a2=r.a;
+	int b2=r.b;
+	RationalNumber answer(a1*b2-a2*b1, b1*b2);
+	return answer;
+}
+RationalNumber RationalNumber::operator-(const int& x) const {
+	RationalNumber temp(x,1);
+	return *this-temp;	
+}
+RationalNumber operator-(const int &x, const RationalNumber& r) {
+	return r-x;
+}
+//binary compound operators
+RationalNumber RationalNumber::operator+=(const RationalNumber& r) const {
+	return *this+r;
+}
+RationalNumber RationalNumber::operator+=(const int& x) const {
+	return *this+x;
+}
+RationalNumber RationalNumber::operator*=(const RationalNumber& r) const {
+	return *this*r;
+}
+RationalNumber RationalNumber::operator*=(const int& x) const {
+	return *this*x;
+}
+RationalNumber RationalNumber::operator/=(const RationalNumber& r) const {
+	return *this/r;
+}
+RationalNumber RationalNumber::operator/=(const int& x) const {
+	return *this/x;
+}
+RationalNumber RationalNumber::operator-=(const RationalNumber& r) const {
+	return *this-r;
+}
+RationalNumber RationalNumber::operator-=(const int& x) const {
+	return *this-x;
+}
+//logical operators
+bool RationalNumber::operator==(const RationalNumber& r ) const {
+	return this->isEqual(r);		// {r.isEqual(*this);}	should also work according to commutative property.
+}
+bool RationalNumber::operator==(const int& x) const {
+	RationalNumber temp(x,1);
+	return this->isEqual(temp);	
+}
+bool operator==(const int& x, const RationalNumber& r) {
+	if(r==x)
+		return true;
+	else
+		return false;
+}
+bool RationalNumber::operator!=(const RationalNumber& r ) const {
+	return !(this->isEqual(r));		// negation of {r.isEqual(*this);}	should also work according to commutative property.
+}
+bool RationalNumber::operator!=(const int& x) const {
+	RationalNumber temp(x,1);
+	return !(this->isEqual(temp));	
+}
+bool operator!=(const int& x, const RationalNumber& r) {
+	if(r!=x)
+		return true;
+	else
+		return false;
+}
+bool RationalNumber::operator<(const RationalNumber& r ) const {
+	if((this->a*r.b)<(this->b*r.a))
+		return true;
+	else 
+		return false;
+}
+bool RationalNumber::operator<(const int& x) const {
+	RationalNumber temp(x,1);
+	return !(*this<temp);	
+}
+bool operator<(const int& x, const RationalNumber& r) {
+	if(r<x)
+		return false;
+	else
+		return true;
+}
+bool RationalNumber::operator<=(const RationalNumber& r ) const {
+	if((this->a*r.b)<=(this->b*r.a))
+		return true;
+	else 
+		return false;
+}
+bool RationalNumber::operator<=(const int& x) const {
+	RationalNumber temp(x,1);
+	return !(*this<=temp);	
+}
+bool operator<=(const int& x, const RationalNumber& r) {
+	if(r<=x)			//r>=x condition should also work but point to be noted here that the condition you are using should be defined.
+		return false;
+	else
+		return true;
+}
+bool RationalNumber::operator>(const RationalNumber& r ) const {
+	if((this->a*r.b)>(this->b*r.a))
+		return true;
+	else 
+		return false;
+}
+bool RationalNumber::operator>(const int& x) const {
+	RationalNumber temp(x,1);
+	return !(*this>temp);	
+}
+bool operator>(const int& x, const RationalNumber& r) {
+	if(r>x)
+		return false;
+	else
+		return true;
+}
+bool RationalNumber::operator>=(const RationalNumber& r ) const {
+	if((this->a*r.b)>=(this->b*r.a))
+		return true;
+	else 
+		return false;
+}
+bool RationalNumber::operator>=(const int& x) const {
+	RationalNumber temp(x,1);
+	return !(*this>=temp);	
+}
+bool operator>=(const int& x, const RationalNumber& r) {
+	if(r>=x)			//r>=x condition should also work but point to be noted here that the condition you are using should be defined.
+		return false;
+	else
+		return true;
+}
+//unary operators
+RationalNumber& RationalNumber::operator++() {
+	*this=*this+1;
+	return *this;
+}
+RationalNumber RationalNumber::operator++(int DUMMY) {
+	RationalNumber temp=*this;
+	*this=*this+1;
+	return temp;
+}
+RationalNumber& RationalNumber::operator--() {
+	*this=*this-1;
+	return *this;
+}
+RationalNumber RationalNumber::operator--(int DUMMY) {
+	RationalNumber temp=*this;
+	*this=*this-1;
+	return temp;
+}
+RationalNumber RationalNumber::operator-() const{
+	RationalNumber temp = *this*-1;
+	return temp;
+}
+
+int main() {
+	RationalNumber r1(1,2),r2,r3,r4,r5;
+	r2=-r1;
+	r3=++++++r1;
+	r4=r2++;
+	r5=(++++r4)++;
+	cout<<"r1= "; r1.print();	cout<<endl;
+	cout<<"r2= "; r2.print();	cout<<endl;
+	cout<<"r3= "; r3.print();	cout<<endl;
+	cout<<"r4= "; r4.print();	cout<<endl;
+	cout<<"r5= "; r5.print();	cout<<endl;
+	return 0;
+}
+
+
+//Question 3:
+ int main() {
+	//srand(time(NULL));
+	int size;
+	cout<<"Enter size of array you want";
+	cin>>size;
+	RationalNumber *r;
+	r = new RationalNumber[size];
+	//initializing array
+	for(int i=0;i<size;i++) {			
+		r[i].setNumerator(rand()%11-5);
+		r[i].setDenominator(rand()%11-5);
+	}
+	cout<<"ARRAY IS: "<<endl;
+	for(int i=0;i<size;i++) {
+		cout<<i+1<<": "; r[i].print(); cout<<endl;
+	}
+	RationalNumber largest = r[0];
+	RationalNumber smallest = r[0];
+	for(int i=1;i<size;i++) {
+		if(largest<r[i]) {
+			largest=r[i];
+		}
+		 else if(smallest>r[i]) {
+			smallest=r[i];
+		}
+	}
+	cout<<"Largest  Number: "; largest.print(); cout<<endl;
+	cout<<"Smallest  Number: "; smallest.print(); cout<<endl;
+	delete [] r;
+	return 0;	
+}
+
+//Question 4:
+ 
+ 
+ 
+ //Question 5:
+ void sortArray(RationalNumber* r, int n) {
+   int i, j, min;
+   RationalNumber temp;
+   for (i = 0; i < n - 1; i++) {
+      min = i;
+      for (j = i + 1; j < n; j++)
+         if (r[j] < r[min])
+            min = j;
+      temp = r[i];
+      r[i] = r[min];
+      r[min] = temp;
+   }
+}
+int main() {
+	srand(time(NULL));
+	int size;
+	cout<<"Enter size of array you want";
+	cin>>size;
+	RationalNumber *r;
+	r = new RationalNumber[size];
+	//initializing array
+	for(int i=0;i<size;i++) {			
+		r[i].setNumerator(rand()%11-5);
+		r[i].setDenominator(rand()%11-5);
+	}
+	cout<<"ARRAY BEFORE SORTING IS: "<<endl;
+	for(int i=0;i<size;i++) {
+		cout<<i+1<<": "; r[i].print(); cout<<endl;
+	}
+	sortArray(r,size);
+	cout<<"ARRAY AFTER SORTING IS: "<<endl;
+	for(int i=0;i<size;i++) {
+		cout<<i+1<<": "; r[i].print(); cout<<endl;
+	}
+	delete[] r;
+	return 0;
+}
+
+
+//Question 6:
+ // by recursion
+/*RationalNumber elementAt(int n) {
+	RationalNumber r1(2,6),r2(3,6);
+	if(n==1)
+		return r1;
+	else if(n==2)
+		return r2;
+	else {
+		return elementAt(n-1) + elementAt(n-2);
+	}
+}*/
+// By for loop
+RationalNumber elementAt(int n) {
+	RationalNumber r1(2,6),r2(3,6),r;
+	if(n==1)
+		return r1;
+	else if(n==2)
+		return r2;
+	else {
+		for(int i=3;i<=n;i++) {
+			r=r1+r2;
+			r1=r2;
+			r2=r;
+		}
+		return r;
+	}
+}
+
+
+//Question 7:
+  
+int elementIndex(RationalNumber r) {
+	RationalNumber r1(1,3), r2(1,2), r3;
+	int index=2;
+	if(r==r1)
+		return 1;
+	else if(r==r2) 
+		return 2;
+	else {
+		while(true) {
+			r3=r1+r2;
+			index++;
+			if(r==r3) 
+				return index;
+			else if(r3>r) 
+				return -1;
+			else {
+				r1=r2;
+				r2=r3;
+			}	
+		}
+	}
+}
+
+
+//Question 8:
+
+//Question 9:
+ 
+ 
+ //Question 10:
+  class Money {
+private:
+	int dollars;
+	int cents;
+public:
+	Money() {
+		dollars=0;
+		cents=0;
+	}
+	Money(int d, int c) {			//money m(12,134)
+		dollars=d;
+		cents=c;
+		standardize();
+	}
+	void standardize(); 
+	float getMoney() const;
+	void setMoney(int ,int);
+	void print() ;
+	
+};
+float Money::getMoney() const {
+	float m;
+	m=cents;
+	m=m/100+dollars;
+	return m;
+}
+void Money::setMoney(int d, int c) {
+	dollars=d;
+	cents=c;
+	this->standardize();
+}
+void Money::print()  {
+	cout<<"The balance is: "<<this->dollars<<" dollars and "<<this->cents<<" cents.";
+}
+void Money::standardize() {
+	if(cents>=100) {
+		int q=cents/100;
+		dollars+=q;
+		cents=cents%100;
+	}
+} 
+
+//Question 11:
+
+//Question 12:
+class Point {
+	private: 
+		float x,y;
+	public:
+		Point() {
+			setX(0.00);
+			setY(0.000);
+		}
+		Point(float Newx, float Newy) {
+			x=Newx;
+			y=Newy;
+		} 
+		
+		void print() {
+			cout<<"("<<x<<","<<y<<")";
+		}
+		void setX(float Newx) {
+			x=Newx;
+		}
+		float getX() {
+			return x;
+		}
+		void setY(float Newy) {
+		y=Newy;
+		}
+		float getY() {
+			return y;
+		}
+};
+
+class Vector2D {
+	private:
+		Point x;
+	public:
+		Vector2D() {
+			x.print();
+		}
+		Vector2D(Point y) {
+			x=y;
+		}
+		Vector2D(float a, float b) {
+			x.setX(a);
+			x.setY(b);
+		}
+		Point getVector() const{
+			return x;
+		}
+		void setVector(Point y) {
+			x=y;
+		}
+		void setVector(float a, float b) {
+			x.setX(a);
+			x.setY(b);
+		}
+		void printVector() {
+			Point o;
+			o.print(); cout<<"---";	x.print();
+		}
+		
+		//length calculator
+		float getLength() const;
+		//double getangle();
+		
+		// the operators
+		Vector2D operator+(const Vector2D ) const;
+		Vector2D operator-(const Vector2D )	const;
+		Vector2D operator++() ;
+		Vector2D operator++(int DUMMY);
+		Vector2D operator--();
+		Vector2D operator--(int DUMMY);
+		
+		//friend streaming operators
+		friend istream& operator>>(istream& in , Vector2D& p); 
+		friend ostream& operator<<(ostream& out, Vector2D& p);		
+};
+float Vector2D::getLength() const {
+	float a = this->getVector().getX();
+	float b = this->getVector().getY();
+	float d=sqrt(abs(pow(a,2)));	// calculating distance of point from origin
+}
+Vector2D Vector2D::operator+(const Vector2D v) const {
+	float a1 = this->getVector().getX();
+	float b1 = this->getVector().getY();
+	float a2 = v.getVector().getX();
+	float b2 = v.getVector().getY();
+	Vector2D r(a1+a2,b1+b2); // adding x to x and y to y
+	return r;	
+}
+Vector2D Vector2D::operator-(const Vector2D v) const {
+	Vector2D r(this->getVector().getX()-v.getVector().getX(),this->getVector().getY()-v.getVector().getY()); //subtracting x from x and...
+	return r;	
+}
+Vector2D Vector2D::operator++() { 
+	float d=this->getLength();
+	d=pow(d,2);
+	Point x((this->getVector().getX()/d),(this->getVector().getY()/d));
+	Vector2D r(x);
+	*this=*this+r;
+	return *this;	
+}
+Vector2D Vector2D::operator++(int Dummy) { 
+	float d=this->getLength();
+	d=pow(d,2);
+	Point x((this->getVector().getX()/d),(this->getVector().getY()/d));
+	Vector2D r(x),temp=*this;
+	*this=*this+r;
+	return temp;	
+}  
+Vector2D Vector2D::operator--() { 
+	float d=this->getLength();
+	d=pow(d,2);
+	Point x((this->getVector().getX()/d),(this->getVector().getY()/d));
+	Vector2D r(x);
+	*this=*this-r;
+	return *this;	
+}
+Vector2D Vector2D::operator--(int Dummy) { 
+	float d=this->getLength();
+	d=pow(d,2);
+	Point x((this->getVector().getX()/d),(this->getVector().getY()/d));
+	Vector2D r(x),temp=*this;
+	*this=*this-r;
+	return temp;	
+}
+
+istream& operator>>(istream& in, Vector2D& p) {
+	cout<<endl;
+	float a, b;
+	cout<<"Enter the x coordinate of the vector";
+	in>>a;
+	cout<<"Enter the y coordinate of the vector";
+	in>>b;
+	p.setVector(a,b);
+	return in;
+}
+ostream& operator<<(ostream& out, Vector2D& p) {
+	out<<"(0,0)----("<<p.getVector().getX()<<","<<p.getVector().getY()<<")";
+	return out;
+}
+int main() {
+	Vector2D v;
+	cin>>v;
+	v--;
+	cout<<"Vector v is: ";
+	cout<<v;
+	cout<<endl;
+	return 0;
+}
+
+//--------------THE END--------------------------------//
+ 

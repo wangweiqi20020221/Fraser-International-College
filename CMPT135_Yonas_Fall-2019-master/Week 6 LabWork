@@ -1,0 +1,501 @@
+#include<iostream>
+#include<fstream>
+using namespace std;
+//Question 1
+char GradeCalculator(int c,int b,int a) {
+	int total=a+b+c;
+	if(total>=90) 
+		return 'A';
+	else if(total>=75)
+		return 'B';
+	else if(total>=65)
+		return 'C';
+	else if(total>=50)
+		return 'D';
+	else if(total>=0)
+		return 'F';
+}
+int main() {
+	ifstream fin;
+	fin.open("ClassList.txt");
+	if(fin.fail()) {
+		cerr<<"Input File \"ClassList\" Not Found ";
+		return 0;
+	}
+	ofstream fout;
+	char ch;
+	int spaceCount=0;
+	int n,c,b,a;
+	fout.open("Report.txt");
+	if(fout.fail()) {
+		cerr<<"Can't find Output File \"Report\"";
+		return 0;
+	}
+	while(!fin.eof()) {
+		fin.get(ch);
+		if(ch==' ')
+			spaceCount++;
+		fout<<ch;
+		if(spaceCount>1) {
+			fin>>c>>b>>a;
+			ch = GradeCalculator(c,b,a);
+			fout<<" "<<ch<<endl;
+			spaceCount=0;
+		}
+	}
+	fin.close();
+	fout.close();
+	return 0;
+}
+
+//Question 2
+#include<iostream>
+#include<fstreaM>
+using namespace std;
+char GradeCalculator(int c,int b,int a) {
+	int total=a+b+c;
+	if(total>=90) 
+		return 'A';
+	else if(total>=75)
+		return 'B';
+	else if(total>=65)
+		return 'C';
+	else if(total>=50)
+		return 'D';
+	else if(total>=0)
+		return 'F';
+}
+int main() {
+	fstream finout;
+	finout.open("ClassList.txt");
+	if(finout.fail()) {
+		cerr<<"Input file Not found!";
+		return 0;
+	}
+	char ch;
+	int spaceCount=0;
+	int n,c,b,a;
+	while(!finout.eof()) {
+		finout.get(ch);
+		if(ch==' ')
+			spaceCount++;
+		if(spaceCount>1) {
+			finout>>c>>b>>a;
+			ch = GradeCalculator(c,b,a);
+			finout<<" "<<ch<<endl;
+			spaceCount=0;
+		}
+	}
+	finout.close();
+	return 0;
+}
+
+//Question 3
+#include<iostream>
+#include<fstream>
+#include<cstdlib>
+using namespace std;
+int main() {
+	ofstream fout;
+	fout.open("randomNumbers.txt");
+	int n = rand()%51+50;
+	int j;
+	for(int i=0;i<n;i++) {
+		j=rand()%1000;
+		fout<<j<<"\t";
+	}
+	return 0;
+}
+
+//Question 4
+#include<iostream>
+#include<fstreaM>
+using namespace std;
+int main() {
+	ifstream fin;
+	fin.open("randomNumbers.txt");
+	int n,min,max;
+	fin>>max;
+	min=max;
+	while(!fin.eof()) {
+		fin>>n; 
+		if(n>max)
+			max=n;
+		if(n<min)
+			min=n;
+	}
+	cout<<"Maximum Number: "<<max<<endl;
+	cout<<"Minimum Niumber: "<<min<<endl;
+	return 0;
+}
+
+//Question 5 -- Same as Week 6 Class practice 
+//Do you seriously think I have time to write it again>
+
+//Question 7
+#include<iostream>
+#include<fstream>
+using namespace std;
+int main() {
+	int n;
+	ofstream fout;
+	fout.open("multiplicationTable.txt");
+	if(fout.fail()) {
+		cerr<<"Cannot Found multiplicationTable.txt";
+		return 0;
+	}
+	cout<<"Enter an Integer for multiplication table ";
+	cin>>n;
+	for(int i=0;i<n;i++)	 {
+		for(int j=0;j<n;j++) {
+			fout<<(i+1)*(j+1)<<"  ";
+		}
+		fout<<endl;
+	}
+	fout.close();
+	return 0;
+}
+
+//Question 8
+//this is challenge if you can't understand please skip it.
+//I did it with 2 methods, method1(straight away using Notes and intuition) and method2(with using knowledge of library function "seek")
+#include<iostream>
+#include<fstreaM>
+using namespace std;
+char GradeCalculator(int c,int b,int a) {
+	int total=a+b+c;
+	if(total>=90) 
+		return 'A';
+	else if(total>=75)
+		return 'B';
+	else if(total>=65)
+		return 'C';
+	else if(total>=50)
+		return 'D';
+	else if(total>=0)
+		return 'F';
+}
+int main() {
+	ifstream fin;
+	fin.open("ClassList.txt");
+	if(fin.fail()) {
+		cerr<<"Input file Not found!";
+		return 0;
+	}
+	char ch;
+	int spaceCount=0;
+	int n,c,b,a;
+	int top=0;
+	int position,i=1;
+	while(fin.eof()==false) {
+		fin.get(ch);
+		if(ch==' ')
+			spaceCount++;
+		if(spaceCount>1) {
+			fin>>c>>b>>a;
+			int x=a+b+c;
+			if(x>top) {
+				top = x;
+				position=i; 
+			}
+			spaceCount=0;
+			i++;
+		}
+	}
+	fin.close();
+	fin.open("ClassList.txt");
+	if(fin.fail()) {
+		cout<<"Cannot open file ";
+		return 0;
+	}
+	int finder=1; // I want it to work 1 time less than it should because I am not seeking back
+	bool flag=0;
+	while(fin.eof()==false && flag==0) {
+		 if(finder==position) {
+		 	while(fin.eof()==false && flag==0) {
+		 	fin.get(ch);
+		 	cout<<ch;
+		 	if(ch==' ')
+				spaceCount++;
+			if(spaceCount>1) {
+		 		fin>>a>>b>>c;
+		 		ch=GradeCalculator(a,b,c);
+		 		cout<<" "<<ch;
+		 		flag=1; //I am Done!
+			}
+		}
+	}
+	else {
+		fin.get(ch);
+		if(ch==' ')
+			spaceCount++;
+		if(spaceCount>1) {
+			fin>>a>>b>>c;
+			finder++;
+			a=b=c=0;
+			spaceCount=0;	//Jump to next line please
+		}
+	}
+	}
+	fin.close();
+	return 0;
+}
+//Question 8 method 2
+
+
+
+
+
+
+
+
+
+//Question 9 
+#include<iostream>
+#include<fstream>
+#include<cstdlib>
+using namespace std;
+void insertionSort(float arr[], int n)  //this is copied from geeks for geeks "Yes, I am lazy"
+{  
+    int i, j;  
+    float key;
+    for (i = 1; i < n; i++) 
+    {  
+        key = arr[i];  
+        j = i - 1;  
+        while (j >= 0 && arr[j] > key) 
+        {  
+            arr[j + 1] = arr[j];  
+            j = j - 1;  
+        }  
+        arr[j + 1] = key;  
+    }  
+}  
+int main() {
+	ofstream fout;
+	fout.open("RandomFloats.txt");
+	if(fout.fail()) {
+		cout<<"ERROR CANNOT CREATE OR FIND FILE";
+		return 0;
+	}
+	int n = rand()%100 +900;
+	for(int i=0;i<n;i++) {
+		float j = 0.0 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(100.0)));
+		fout<<j<<endl;
+	}
+	fout.close();
+	ifstream fin;
+	fin.open("RandomFloats.txt");
+	if(fin.fail()) {
+		cout<<"ERROR CANNOT FIND FILE;";
+		return 0;
+	}
+	int count=0;
+	float ch;
+	while(fin.eof()==false) {
+		fin>>ch;
+		count++;
+	}
+	float arr[count];
+	int i=0;
+	fin.close();
+	fin.open("RandomFloats.txt");
+	while(fin.eof()==false) {
+		fin>>ch;
+		arr[i] = ch; 
+		i++;
+	}
+	insertionSort(arr,count);
+	fout.open("SortedRandomFloats");
+	if(fout.fail()) {
+		cout<<"ERROR CANNOT CREATE OR FIND FILE";
+		return 0;
+	}
+	for(i=0;i<count;i++) {
+		fout<<arr[i]<<endl;
+	}
+	return 0;
+}
+
+//Class Practice: 
+#include<iostream>
+#include<fstream>
+using namespace std;
+
+//METHOD 1: BY SMARTARRAY CLASS
+
+class SmartArray {
+	private:
+		int *A;
+		int size;
+	public:
+		//constructors
+		SmartArray();
+		SmartArray(const int *A, const int size);
+		SmartArray(const SmartArray&L);
+		~SmartArray() {
+			if (this->getSize() > 0) {
+				delete[] this->A;
+				this->size= 0;
+			}
+		}		
+		//getters and setters, operators and other functions
+		int getSize() const;
+		int& operator[](const int &index) const;
+		SmartArray operator=(const SmartArray &L); 
+		void append(const int& e);
+		friend ostream& operator<<(ostream &out, const SmartArray &L); 
+		//Question 5
+		int findElement(const int) const;
+		//Question 6
+		bool remove(const int);
+		//Question 7
+		void removeAll();
+		//Question 8
+		SmartArray operator+(const SmartArray&) const;
+};
+
+SmartArray::SmartArray() {
+	this->size=0;
+	this->A=NULL;
+}
+SmartArray::SmartArray(const int *A, const int size) {
+	this->size=size;
+	if(this->getSize()>0) 
+		this->A=new int[this->getSize()];
+	for(int i=0;i<this->getSize();i++) 
+		this->A[i] = A[i];	
+}
+int SmartArray::getSize() const{
+	return this->size;
+} 
+int& SmartArray::operator[](const int& index ) const {
+	if(index>=0  && index<this->getSize()){
+		return this->A[index];
+	}
+	else {
+		cout<<"ERROR! ARRAY INDEX OUT OF BUONDS!";
+		abort();
+	}
+}
+void SmartArray::append(const int& e) {
+	int *temp=new int [this->getSize()+1];
+	for(int i=0;i<this->getSize();i++) 
+		temp[i]=this->A[i];
+	temp[this->getSize()]=e;
+	if(this->getSize()>0)
+		delete[] this->A;
+	this->A = temp;
+	this->size = this->size+1;
+}
+ostream& operator<<(ostream &out, const SmartArray &L) {
+	out<<"[";
+	for(int i=0;i<L.getSize()-1;i++) 
+		out<<L[i]<<",";
+	if(L.getSize()>0) 
+		out<<L[L.getSize()-1];
+	out<<"]";
+	return out;
+}
+SmartArray::SmartArray(const SmartArray &L) {
+	this->size=L.getSize();
+	if(this->getSize()>0) {
+		this->A=new int [this->getSize()];
+		for(int i=0;i<this->getSize();i++)
+			this->A[i] = L[i];
+	}
+}
+SmartArray SmartArray::operator=(const SmartArray &L) {
+	this->~SmartArray();
+	this->size=L.getSize();
+	if(this->getSize()>0) {
+		this->A = new int[this->getSize()];
+		for(int i =0;i<this->getSize();i++) 
+			this->A[i] = L[i];
+	}
+	return *this;
+}
+int SmartArray::findElement(const int n) const {
+	for(int i=0;i<this->getSize();i++) 
+		if(A[i]==n)
+			return i+1;
+	return -1;
+}
+bool SmartArray::remove(const int r) {
+	for(int i=0;i<this->getSize();i++) {
+		if(this->A[i] == r) {
+			for(int j=i;j<(this->getSize()-1);j++) {
+				this->A[j] = this->A[j+1];			
+			}
+			this->size = this->getSize()-1;
+			return true;
+		}
+	}
+	return false;
+}
+void SmartArray::removeAll() {
+	int i=0;
+	while(this->remove(this->A[i])==true) {}
+	return;
+}
+SmartArray SmartArray::operator+(const SmartArray& L1) const {
+	SmartArray temp;
+	temp.size = this->getSize()+L1.getSize();
+	temp.A = new int[temp.getSize()];
+	for(int i=0;i<this->getSize();i++) {
+		temp.A[i] = this->A[i];
+	}
+	int j=0;
+	for(int k=this->getSize();k<temp.getSize();k++) {
+		temp.A[k] = L1.A[j];
+		j++;
+	}
+	return temp;
+}
+
+int main() {
+	ifstream fin;
+	fin.open("RandNum.txt");
+	if(fin.fail())  {
+		cout<<"File opening failed";
+		return 0;
+	}
+	int n;
+	SmartArray S;
+
+	while(fin.eof()==false) {
+		fin>>n;
+		S.append(n);
+	}
+	for(int i=S.getSize()-1;i>=0;i--) {
+		cout<<S[i];
+	}
+	fin.close();
+	return 0;
+}
+
+//METHOD 2: BY RECURSION
+
+#include<iostream>
+#include<fstream>
+using namespace std;
+//still don't know how its working though!
+void lastNum(ifstream& fin) {
+	int n;
+	while(fin.eof()==false) {
+		fin>>n;
+		lastNum(fin);
+		cout<<n;
+	}
+}
+int main() {
+	ifstream fin;
+	fin.open("RandNum.txt");
+	if(fin.fail()) {
+		cout<<"Error file not found";
+		return 0;
+	}
+	lastNum(fin);
+	fin.close();
+	return 0;
+}

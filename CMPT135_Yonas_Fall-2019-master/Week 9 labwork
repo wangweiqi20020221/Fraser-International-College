@@ -1,0 +1,359 @@
+//Question 3:
+#include<iostream>
+using namespace std;
+class RECTANGLE
+{
+private:
+double length, width;
+public:
+//Constructors
+RECTANGLE();
+RECTANGLE(const double &len, const double &wid);
+RECTANGLE(const RECTANGLE &r);
+//Getters
+double getLength() const;
+double getWidth() const;
+//Setters
+void setLength(const double &len);
+void setWidth(const double &wid);
+//Other member functions
+double getArea() const;
+double getPerimeter() const;
+friend ostream& operator << (ostream &outputStream, const RECTANGLE &r);
+friend istream& operator >> (istream &inputStream, RECTANGLE &r);
+};
+
+RECTANGLE::RECTANGLE() { this->length=0; this->width=0; }
+RECTANGLE::RECTANGLE(const double &len, const double &wid) { this->setLength(len); this->setWidth(wid); }
+RECTANGLE::RECTANGLE(const RECTANGLE &r) { this->setLength(r.getLength()); this->setWidth(r.getWidth()); }
+
+double RECTANGLE::getLength() const { return this->length; }
+double RECTANGLE::getWidth() const { return this->width; }
+
+void RECTANGLE::setLength(const double &len) { this->length = len; }
+void RECTANGLE::setWidth(const double &wid) { this->width = wid; }
+
+double RECTANGLE::getArea() const { return this->getLength()*this->getWidth(); }
+double RECTANGLE::getPerimeter() const { return 2*(this->getLength()+this->getWidth()); }
+
+ostream& operator<<(ostream &outputStream, const RECTANGLE &r) {
+	outputStream<<"Rectangle: Length = "<<r.getLength()<<" Width = "<<r.getWidth()<<" Area = "<<r.getArea()<<" Perimater = "<<r.getPerimeter();
+return outputStream;
+}
+istream& operator>>(istream &inputStream, RECTANGLE &r) {
+	cout<<"Reading in Rectangle information: "<<endl;
+	double temp;
+	cout<<"Enter Length: ";
+	inputStream>>temp;
+	r.setLength(temp);
+	cout<<"Enter Width: ";
+	inputStream>>temp;
+	r.setWidth(temp);
+	return inputStream;
+}
+
+class SQUARE : public RECTANGLE
+{
+public:
+//Constructors
+SQUARE();
+SQUARE(const double &s);
+SQUARE(const SQUARE &s);
+//Getters
+double getSide() const;
+//Setters
+void setLength(const double &len);
+void setWidth(const double &wid);
+void setSide(const double &s);
+//Other member functions
+friend ostream& operator << (ostream &outputStream, const SQUARE &s);
+friend istream& operator >> (istream &inputStream, SQUARE &s);
+};
+
+SQUARE::SQUARE() { this->setSide(0); }
+SQUARE::SQUARE(const double &s) { this->setSide(s); }
+SQUARE::SQUARE(const SQUARE &s) { this->setSide(s.getSide()); }
+
+double SQUARE::getSide() const { return this->getLength(); }
+
+void SQUARE::setLength(const double &len) {  this->setSide(len); }
+void SQUARE::setSide(const double &s) 	{ this->RECTANGLE::setLength(s); this->RECTANGLE::setWidth(s); }
+void SQUARE::setWidth(const double &len) { this->setSide(len); }  
+
+ostream& operator<< (ostream &outputStream, const SQUARE &s) {
+	outputStream<<"Square: Side= "<<s.getSide()<<" Area= "<<s.getArea()<<" Perimeter= "<<s.getPerimeter();
+	return outputStream;
+}
+
+istream& operator>> (istream &inputStream, SQUARE &s) {
+	cout<<"Reading in the Square information"<<endl<<"Enter Side: ";
+	double side;
+	inputStream>>side;
+	s.setSide(side);
+	return inputStream;
+}
+
+int main() {
+	//Test Constructors, getters and out streaming operator
+	RECTANGLE r1;
+	RECTANGLE r2(2, 3);
+	RECTANGLE r3 = r2;
+//	Fraser International College CMPT135 Week 7 Lab Work – Dr. Yonas T. Weldeselassie (Ph.D.) Page 4
+	cout << "Object 1: " << r1 << endl;
+	cout << "Object 2: " << r2 << endl;
+	cout << "Object 3: " << r3 << endl;
+	SQUARE s1;
+	SQUARE s2(3);
+	SQUARE s3 = s2;
+	cout << "Object 4: " << s1 << endl;
+	cout << "Object 5: " << s2 << endl;
+	cout << "Object 6: " << s3 << endl;
+	//Test setters
+	r2.setLength(5);
+	r3.setWidth(6);
+	s2.setLength(8);
+	s3.setWidth(4);
+	cout << "Object 2: " << r2 << endl;
+	cout << "Object 3: " << r3 << endl;
+	cout << "Object 5: " << s2 << endl;
+	cout << "Object 6: " << s3 << endl;
+	//Test input stream operators
+	cin >> r1;
+	cin >> s1;
+	cout << "Object 1: " << r1 << endl;
+	cout << "Object 4: " << s1 << endl;
+
+	return 0;
+}
+
+
+
+
+
+
+
+
+//I wanna die again
+
+
+
+
+
+
+
+
+
+
+//Question 4-7 (Ellipse , Circle, Cylinder, Disk): 
+#include<iostream> 
+#include<cmath>
+
+using namespace std;
+
+class Ellipse {
+	double minorAxis,majorAxis;
+public:
+	//constructors:
+	Ellipse();
+	Ellipse(const double &a,const double &b);
+	Ellipse(const Ellipse &e)  ;
+	//getters:
+	double get_minorAxis() const ; 
+	double get_majorAxis() const ;
+	//setters:
+	void set_majorAxis(const double &a);
+	void set_minorAxis(const double &b);
+	//Arean and perimeter:
+	double getArea() const ;
+	double getCircumference() const ;
+	//friend input/output:
+	friend istream& operator>>(istream& inputStream, Ellipse &e);
+	friend ostream& operator<<(ostream& outputStream, const Ellipse &e);
+};
+
+Ellipse::Ellipse() { this->set_majorAxis(0); this->set_minorAxis(0); }
+Ellipse::Ellipse(const double &a, const double &b) { this->set_majorAxis(a); this->set_minorAxis(b); }
+Ellipse::Ellipse(const Ellipse &e) { this->set_majorAxis(e.get_majorAxis()); this->set_minorAxis(e.get_minorAxis()); }
+
+void Ellipse::set_majorAxis(const double &a) { this->majorAxis=a; }
+void Ellipse::set_minorAxis(const double &b) { this->minorAxis=b; }
+
+double Ellipse::get_majorAxis() const { return this->majorAxis; }
+double Ellipse::get_minorAxis() const { return this->minorAxis; }
+
+double Ellipse::getArea() const { return M_PI*this->get_majorAxis()*this->get_minorAxis(); }
+double Ellipse::getCircumference() const { return 2*M_PI*sqrt((pow(this->get_majorAxis(),2) + pow(this->get_minorAxis(),2))/2); }
+
+istream& operator>>(istream& inputStream, Ellipse &e) {
+	double len;
+	cout<<"Reading Ellipse information"<<endl<<"Enter major Axis length: ";
+	inputStream>>len;
+	e.set_majorAxis(len);
+	cout<<"Enter minor Axis length: ";
+	inputStream>>len;
+	e.set_minorAxis(len);
+	return inputStream;
+}
+ostream& operator<<(ostream& outputStream, const Ellipse &e) {
+	outputStream<<"Ellipse: major axis= "<<e.get_majorAxis()<<", minor axis= "<<e.get_minorAxis()<<", Area= "<<e.getArea()<<", Circumference= "<<e.getCircumference();
+	return outputStream;
+}
+
+class Circle : public Ellipse {
+public: 
+	//constructors:
+	Circle();
+	Circle(const double &radius);
+	Circle(const Circle &c) ;
+	//geters:
+	double getRadius() const ;
+	//setters:
+	void set_majorAxis(const double &);
+	void set_minorAxis(const double &);
+	void set_Radius(const double&);
+	//Area and circmference are not needed;
+	//Assignment operator: 
+	Circle& operator = (const Circle &c);
+	//input and output:
+	friend istream& operator>>(istream& inputStream, Circle &c);
+	friend ostream& operator<<(ostream& outputStream, const Circle &c);
+};
+
+Circle::Circle() { this->set_Radius(0); }
+Circle::Circle(const double &radius) { this->set_Radius(radius); }
+Circle::Circle(const Circle &c) { this->set_Radius(c.getRadius()); }
+
+double Circle::getRadius() const{ return this->get_majorAxis(); }
+
+Circle& Circle::operator = (const Circle &c) {
+	if(this==&c) 
+		return *this;
+	this->set_Radius(c.getRadius());
+	return *this;
+}
+void Circle::set_majorAxis(const double &len) { this->set_Radius(len); }
+void Circle::set_minorAxis(const double &len) { this->set_Radius(len); }
+void Circle::set_Radius(const double &len) { this->Ellipse::set_majorAxis(len); this->Ellipse::set_minorAxis(len); }
+
+istream& operator>>(istream& inputStream, Circle &c) {
+	cout<<"Reading CIrcle information: "<<endl<<"Enter Radius: ";
+	double deli;
+	inputStream>>deli;
+	c.set_Radius(deli);
+	return inputStream;
+}
+ostream& operator<<(ostream& outputStream, const Circle &c) {
+	cout<<"Circle: Radius= "<<c.getRadius()<<", Area= "<<c.getArea()<<", Circumference= "<<c.getCircumference();
+}
+
+class Cylinder : public Circle {
+	double height;
+public:
+	Cylinder();
+	Cylinder(const double &, const double &);
+	Cylinder(const Cylinder &c);
+	//Assignment operator: 
+	Cylinder& operator=(const Cylinder &c);
+	//geters:
+	double get_height() const ;
+	//seters:
+	void set_height(const double &);
+	//Cylinder has a volume as well you nasty cyka:
+	double getVolume() const ;
+	//it also have diiferent tsa and csa:
+	double getArea() const ;
+	double getCurvedSurfaceArea() const ;
+	//friend input/output:
+	friend istream& operator>>(istream& inputStream, Cylinder &c);
+	friend ostream& operator<<(ostream& outputStream, const Cylinder &c);
+};
+
+Cylinder::Cylinder() { this->set_Radius(0); this->set_height(0); }
+Cylinder::Cylinder(const double &r, const double &h) { this->set_Radius(r); this->set_height(h); }
+Cylinder::Cylinder(const Cylinder &c) { this->set_height(c.get_height()); this->set_Radius(c.getRadius()); }
+
+
+Cylinder& Cylinder::operator =(const Cylinder &c) {
+	if(this==&c)
+		return *this;
+	this->set_height(c.get_height());
+	this->set_Radius(c.getRadius());
+}
+
+double Cylinder::get_height() const { return this->height; }
+
+void Cylinder::set_height(const double &heartless) { this->height = heartless; }
+
+double Cylinder::getVolume() const { return this->getArea()*this->get_height(); }
+double Cylinder::getCurvedSurfaceArea() const { return this->getCircumference()*this->get_height(); }
+double Cylinder::getArea() const { return ( this->getCurvedSurfaceArea() + this->Circle::getArea() ); } 
+
+istream& operator>>(istream& inputStream, Cylinder &c) {
+	double len;
+	cout<<"Reading Cylinder information: "<<endl<<"Enter radius: ";
+	inputStream>>len;
+	c.set_Radius(len);
+	cout<<"Enter heigth: ";
+	inputStream>>len;
+	c.set_height(len);
+	return inputStream;
+}
+ostream& operator<<(ostream& outputStream, const Cylinder &c) {
+	cout<<"Cylinder: Radius= "<<c.getRadius()<<", height= "<<c.get_height()<<", Total Surface Area= "<<c.getArea()<<", Curved Surface Area= "<<c.getCurvedSurfaceArea()<<", Volume= "<<c.getVolume();
+	return outputStream;
+}
+
+class Disk : public Cylinder {
+public: 
+	Disk();
+	Disk(const double &, const double &);
+	Disk(const Disk &d);
+	//Assignmrnt operator :
+	Disk& operator=(const Disk &d);
+	//Area:
+	double getArea() const;
+	//friend input/output: 
+	friend istream& operator>>(istream& inputStream, Disk &c);
+	friend ostream& operator<<(ostream& outputStream, const Disk &c);
+};
+
+Disk::Disk() : Cylinder() { }
+Disk::Disk(const double &r, const double &d) : Cylinder(r,d) { }
+Disk::Disk(const Disk &d) : Cylinder(static_cast<Cylinder>(d) ) { }
+
+double Disk::getArea() const { return (this->Circle::getArea() + this->Cylinder::getArea()); }
+
+Disk& Disk::operator=(const Disk &d) {
+	if(this==&d)
+		return *this;
+	this->set_height(d.get_height());
+	this->set_Radius(d.getRadius());
+	return *this;
+}
+
+istream& operator>>(istream& inputStream, Disk &c) {
+	double len;
+	cout<<"Reading Disk information: "<<endl<<"Enter radius: ";
+	inputStream>>len;
+	c.set_Radius(len);
+	cout<<"Enter heigth: ";
+	inputStream>>len;
+	c.set_height(len);
+	return inputStream;
+}
+ostream& operator<<(ostream& outputStream, const Disk &c) {
+	cout<<"Disk: Radius= "<<c.getRadius()<<", height= "<<c.get_height()<<", Surface Area= "<<c.getArea()<<", Curved Surface Area= "<<c.getCurvedSurfaceArea()<<", Volume= "<<c.getVolume();
+	return outputStream;
+}
+
+
+int main() {
+	Disk d;
+	cin>>d;
+	cout<<d;
+	return 0;
+}
+
+//Question 8 and 9(Ellipsoid and Sphere ):
+ 
+

@@ -1,0 +1,91 @@
+//Just Question 4 . yeah thats all of it cyka.
+
+#include<iostream>
+#include<cmath>
+using namespace std;
+class Shape {		//Not purely Abstract class or interface because of ostream operator
+	public:
+		virtual float getArea() const =0;
+		virtual void printName() const =0;
+	friend ostream& operator<<(ostream& outputStream, const Shape &s);
+};
+
+class Rectangle : public Shape {
+	float width, height;
+	public:
+		Rectangle() : width(0), height(0) {}
+		Rectangle(const float &w, const float &h) : width(w), height(h) {}	
+		float getArea() const {
+			return this->height*this->width;
+		}
+		void printName() const {
+			cout<<"This is a rectangle"<<endl;
+		}
+};
+
+class Triangle: public Shape {
+	float side1,side2, side3;
+	public:
+		Triangle() : side1(0),side2(0),side3(0){}
+		Triangle(const float &s1, const float &s2,const float &s3) : side1(s1),side2(s2),side3(s3){}
+		float getArea() const {
+			float s = (this->side1+this->side2+this->side3)/2.0;
+			return sqrt(s*(s-this->side1)*(s-this->side2)*(s-this->side3));
+		}
+		void printName() const {
+			cout<<"This is a triangle" ;
+		}
+};
+
+class Circle: public Shape {
+	float radius;
+	public:
+		Circle() : radius(0) {}
+		Circle(const float &r) : radius(r) {}
+		float getArea() const {
+			return 3.14*this->radius*this->radius;
+		}
+		void printName() const {
+			cout<<"This is a circle";
+		}
+};
+
+ostream& operator<<(ostream& outputStream, const Shape &s) {
+	s.printName();
+	outputStream<<"\tArea ="<<s.getArea();
+	return outputStream;
+}
+
+
+void foo(Shape* s1, Shape& s2)
+{
+cout << "Entering the foo function" << endl;
+cout << *s1 << endl;
+cout << s2 << endl;
+cout << "Exiting the foo function" << endl;
+}
+
+
+typedef Shape* ShapePtr;
+int main() {
+	Rectangle r(4.0,5.0);
+	Triangle t;
+	Circle c(2.0);
+	ShapePtr *pShape = new ShapePtr[5];
+	pShape[0] = new Rectangle(4.0,5.0);
+	pShape[1] = new Triangle();
+	pShape[2] = new Circle(2.0);
+	pShape[4] = new Circle(2.8);
+	pShape[3] = new Triangle(3.5,3.5,3.5);
+	for(int i=0;i<5;i++) {
+		pShape[i]->printName();
+		cout<<"\t Area = "<<pShape[i]->getArea()<<endl<<endl;
+	}
+	foo(pShape[0], *pShape[1]);
+	for(int i=0;i<5;i++) {
+		delete pShape[i];
+	}
+	delete[] pShape;
+	return 0;
+}
+
